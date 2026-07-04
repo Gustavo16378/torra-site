@@ -1,0 +1,367 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+@theme {
+  --color-ink: #120d09; /* fundo dominante — NUNCA #000 */
+  --color-ink-deep: #0b0705; /* footer */
+  --color-cream: #f2ece1; /* tipografia display, textos */
+  --color-gold: #c9973f; /* acentos */
+
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-text: 'Archivo', system-ui, sans-serif;
+
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --pad-x: clamp(20px, 5vw, 72px);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-text);
+  font-weight: 400;
+  overflow-x: clip; /* os títulos cortados vazam */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* ============================================================
+   SCROLLBAR — só uma linha fina cor de café, sem trilho nem setas
+   ============================================================ */
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--color-gold) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border: none;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-corner {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.012em;
+}
+
+/* ============================================================
+   GRAIN DE FILME — fixed por cima de tudo
+   ============================================================ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -60%;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 7s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2%, 3%);
+  }
+  40% {
+    transform: translate(3%, -2%);
+  }
+  60% {
+    transform: translate(-3%, -3%);
+  }
+  80% {
+    transform: translate(2%, 2%);
+  }
+}
+
+/* ============================================================
+   KEN BURNS — alternar kbIn/kbOut entre seções
+   ============================================================ */
+@keyframes kbIn {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes kbOut {
+  from {
+    transform: scale(1.18);
+  }
+  to {
+    transform: scale(1.03);
+  }
+}
+
+.ken {
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform;
+}
+
+/* ============================================================
+   PARALLAX do menu — só onde animation-timeline: view() existe
+   ============================================================ */
+@keyframes par {
+  from {
+    transform: translateY(-3.5%);
+  }
+  to {
+    transform: translateY(3.5%);
+  }
+}
+
+.par {
+  position: absolute;
+  inset: 0;
+}
+
+@supports (animation-timeline: view()) {
+  .par {
+    top: -10%;
+    bottom: -10%;
+    animation: par linear both;
+    animation-timeline: view();
+  }
+}
+
+/* ============================================================
+   INDICADOR DE SCROLL do hero
+   ============================================================ */
+@keyframes scrollDrop {
+  0% {
+    transform: translateY(-102%);
+  }
+  55% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(102%);
+  }
+}
+
+/* ============================================================
+   REVEALS (useReveal)
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(44px);
+  transition:
+    opacity 1s var(--ease-cine),
+    transform 1s var(--ease-cine);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   CTA GHOST (hero)
+   ============================================================ */
+.ghost-cta {
+  display: inline-block;
+  border: 1px solid rgba(242, 236, 225, 0.55);
+  padding: 17px 36px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--color-cream);
+  transition:
+    background-color 0.7s var(--ease-cine),
+    color 0.7s var(--ease-cine),
+    border-color 0.7s var(--ease-cine);
+}
+
+.ghost-cta:hover {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  border-color: var(--color-cream);
+}
+
+/* ============================================================
+   TÍTULO "MENU" — no mobile desce pra não colidir com o marcador
+   (mantém o corte pela borda; só afasta do "02 · DESTAQUES DA CASA")
+   ============================================================ */
+@media (max-width: 640px) {
+  .menu-titulo {
+    padding-top: 80px;
+  }
+}
+
+/* ============================================================
+   ITENS DO CARDÁPIO COMPLETO — dot-leader, hover só desktop
+   ============================================================ */
+.cardapio-item {
+  transition: transform 0.5s var(--ease-cine);
+}
+
+@media (hover: hover) and (min-width: 861px) {
+  .cardapio-item:hover {
+    transform: translateX(8px);
+  }
+}
+
+/* ============================================================
+   LINKS DO FOOTER
+   ============================================================ */
+.footer-link {
+  color: rgba(242, 236, 225, 0.75);
+  transition: color 0.6s var(--ease-cine);
+}
+
+.footer-link:hover {
+  color: var(--color-gold);
+}
+
+/* ============================================================
+   INDICADOR DE SCROLL (hero)
+   ============================================================ */
+.scroll-track {
+  position: relative;
+  width: 1px;
+  height: 46px;
+  overflow: hidden;
+  background: rgba(242, 236, 225, 0.18);
+}
+
+.scroll-fiber {
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold);
+  animation: scrollDrop 2.4s var(--ease-cine) infinite;
+}
+
+/* ============================================================
+   MAPA — pulso do marcador, controles e CTA de rota
+   ============================================================ */
+@keyframes pulsar {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.05);
+    opacity: 0;
+  }
+}
+
+.mapa-pulso {
+  animation: pulsar 2.6s ease-out infinite;
+}
+
+/* badge de coordenadas é decorativo — esconde onde colidiria com o marcador */
+@media (max-width: 560px) {
+  .mapa-coords {
+    display: none;
+  }
+}
+
+.zoom-btn {
+  transition:
+    border-color 0.4s var(--ease-cine),
+    color 0.4s var(--ease-cine);
+}
+
+.zoom-btn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.rota-cta {
+  display: inline-block;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  transition:
+    background-color 0.5s var(--ease-cine),
+    color 0.5s var(--ease-cine);
+}
+
+.rota-cta:hover {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* ============================================================
+   ACESSIBILIDADE
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body::after {
+    animation: none;
+  }
+
+  .ken {
+    animation: none !important;
+    transform: scale(1.05) !important;
+  }
+
+  @supports (animation-timeline: view()) {
+    .par {
+      animation: none;
+      top: 0;
+      bottom: 0;
+    }
+  }
+
+  .scroll-fiber {
+    animation: none !important;
+  }
+
+  .mapa-pulso {
+    animation: none !important;
+  }
+
+  .reveal {
+    transform: none;
+    transition: opacity 0.6s var(--ease-cine);
+  }
+}
