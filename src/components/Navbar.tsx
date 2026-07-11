@@ -70,13 +70,8 @@ export function Navbar() {
             : 'linear-gradient(180deg, rgba(18,13,9,0.72), rgba(18,13,9,0))',
           backdropFilter: scrolled ? 'blur(8px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(8px)' : 'none',
-          // border-b SEMPRE presente (1px), só muda a cor — sem layout shift
-          borderBottom: `1px solid ${
-            scrolled ? 'rgba(242,236,225,0.08)' : 'transparent'
-          }`,
           // NUNCA transition-all — só o que realmente anima
-          transitionProperty:
-            'transform, background-color, backdrop-filter, border-color',
+          transitionProperty: 'transform, background-color, backdrop-filter',
           transitionDuration: '0.6s',
           transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
         }}
