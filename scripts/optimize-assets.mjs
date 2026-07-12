@@ -39,8 +39,9 @@ for (const file of files) {
   console.log(`✓ ${name} → webp + jpg`)
 }
 
-// OG image (1200x630) a partir do hero
-await sharp(join(SRC, 'hero-extracao.jpg'))
+// OG image (1200x630) — usa o render do hero com o "TORRA." embutido
+// (torra-cafe-desktop-hero.png), que rende melhor no preview do link
+await sharp(join(SRC, 'torra-cafe-desktop-hero.png'))
   .rotate()
   .resize({ width: 1200, height: 630, fit: 'cover', position: 'centre' })
   .jpeg({ quality: 82, mozjpeg: true })
