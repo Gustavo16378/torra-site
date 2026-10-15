@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useScrollDirection } from '../hooks/useScrollDirection'
 import { useScrollSpy } from '../hooks/useScrollSpy'
+import { CARDAPIO_URL } from '../data/links'
 
 const LINKS = [
   { id: 'menu', label: 'MENU' },
@@ -129,6 +130,23 @@ export function Navbar() {
                 </li>
               )
             })}
+            <li>
+              <a
+                href={CARDAPIO_URL}
+                className="font-text transition-colors"
+                style={{
+                  fontWeight: 600,
+                  fontSize: 11,
+                  letterSpacing: '0.3em',
+                  transitionDuration: '0.6s',
+                  color: 'var(--color-gold)',
+                  borderBottom: '1px solid rgba(201,151,63,0.5)',
+                  paddingBottom: 4,
+                }}
+              >
+                CARDÁPIO
+              </a>
+            </li>
           </ul>
 
           {/* Hambúrguer mobile — visível por padrão, some ≥861px */}
@@ -232,6 +250,18 @@ export function Navbar() {
                     {link.label}
                   </a>
                 ))}
+                <a
+                  href={CARDAPIO_URL}
+                  className="font-display text-gold"
+                  style={{
+                    pointerEvents: 'auto',
+                    fontSize: '14vw',
+                    lineHeight: 1.02,
+                    letterSpacing: '-0.015em',
+                  }}
+                >
+                  CARDÁPIO
+                </a>
               </nav>
 
               {/* Tagline */}

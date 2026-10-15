@@ -1,6 +1,7 @@
 import { SceneMedia } from '../components/SceneMedia'
 import { SceneMarker } from '../components/SceneMarker'
 import { images } from '../assets/images'
+import { CARDAPIO_URL } from '../data/links'
 
 export function Hero() {
   const scrollToMenu = (e: React.MouseEvent) => {
@@ -63,14 +64,33 @@ export function Hero() {
           CAFÉS ESPECIAIS · TORRA PRÓPRIA · DESDE 2019
         </p>
 
-        <a
-          href="#menu"
-          onClick={scrollToMenu}
-          className="ghost-cta font-text"
-          style={{ marginTop: 'clamp(32px, 4vw, 52px)', fontSize: 11 }}
+        <div
+          className="flex flex-col items-center sm:flex-row"
+          style={{ marginTop: 'clamp(32px, 4vw, 52px)', gap: 14 }}
         >
-          VER O MENU
-        </a>
+          <a
+            href={CARDAPIO_URL}
+            className="rota-cta font-text"
+            style={{
+              padding: '17px 36px',
+              fontWeight: 600,
+              fontSize: 11,
+              letterSpacing: '0.32em',
+              background: 'var(--color-gold)',
+              color: 'var(--color-ink)',
+            }}
+          >
+            PEÇA PELO WHATSAPP
+          </a>
+          <a
+            href="#menu"
+            onClick={scrollToMenu}
+            className="ghost-cta font-text"
+            style={{ fontSize: 11 }}
+          >
+            VER O MENU
+          </a>
+        </div>
       </div>
 
       {/* Indicador de scroll */}

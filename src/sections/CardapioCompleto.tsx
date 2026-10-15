@@ -1,5 +1,6 @@
 import { RevealText } from '../components/RevealText'
 import { CARDAPIO } from '../data/cardapio'
+import { CARDAPIO_URL } from '../data/links'
 
 /**
  * Cardápio completo — sub-bloco de #menu, entra depois das 4 faixas de
@@ -150,6 +151,26 @@ export function CardapioCompleto() {
             </RevealText>
           ))}
         </div>
+
+        <RevealText
+          style={{
+            marginTop: 'clamp(44px, 7vh, 72px)',
+            paddingBottom: 'clamp(56px, 9vh, 110px)',
+          }}
+        >
+          <a
+            href={CARDAPIO_URL}
+            className="rota-cta font-text uppercase"
+            style={{
+              padding: '17px 36px',
+              fontWeight: 600,
+              fontSize: 11,
+              letterSpacing: '0.26em',
+            }}
+          >
+            VER CARDÁPIO COMPLETO E PEDIR ↗
+          </a>
+        </RevealText>
       </div>
     </div>
   )
