@@ -47,9 +47,11 @@ export default function Mapa() {
     })
     mapRef.current = mapa
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd',
+    // Tiles padrão do OpenStreetMap (sem chave de API). O visual escuro vem do
+    // filtro CSS em .mapa-tiles (index.css), aplicado só nesta camada.
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
+      className: 'mapa-tiles',
     }).addTo(mapa)
 
     const icon = L.divIcon({
@@ -298,7 +300,7 @@ export default function Mapa() {
           color: 'rgba(242,236,225,0.35)',
         }}
       >
-        MAPA © OPENSTREETMAP · © CARTO
+        MAPA © COLABORADORES DO OPENSTREETMAP
       </span>
     </section>
   )

@@ -1,37 +1,50 @@
-// Cada imagem exporta { webp, jpg } — gerados por scripts/optimize-assets.mjs.
-// Usados pelo <picture> do SceneMedia (WebP + fallback JPEG).
-import heroWebp from './hero-extracao.webp'
-import heroJpg from './hero-extracao.jpg'
-import manifestoWebp from './manifesto-vapor.webp'
-import manifestoJpg from './manifesto-vapor.jpg'
-import espressoWebp from './menu-espresso.webp'
-import espressoJpg from './menu-espresso.jpg'
-import latteWebp from './menu-latte.webp'
-import latteJpg from './menu-latte.jpg'
-import coldbrewWebp from './menu-coldbrew.webp'
-import coldbrewJpg from './menu-coldbrew.jpg'
-import v60Webp from './menu-v60.webp'
-import v60Jpg from './menu-v60.jpg'
-import origemWebp from './origem-graos.webp'
-import origemJpg from './origem-graos.jpg'
-import casaWebp from './casa-interior.webp'
-import casaJpg from './casa-interior.jpg'
-import footerWebp from './footer-xicara.webp'
-import footerJpg from './footer-xicara.jpg'
+// Fotos geradas por scripts/optimize-assets.mjs: 4 larguras × (avif, webp, jpg).
+// Cada SceneImage carrega os srcsets prontos pro <picture> do SceneMedia.
+const urls = import.meta.glob<string>('./*-*.{avif,webp,jpg}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+})
 
 export interface SceneImage {
+  avif: string
   webp: string
   jpg: string
+  /** fallback do <img> (jpg médio) */
+  src: string
+  /** largura/altura intrínsecas — evitam layout shift */
+  width: number
+  height: number
+  /** `sizes` — a foto cobre o container com object-cover */
+  sizes: string
+}
+
+const WIDTHS = [480, 800, 1200]
+
+function scene(name: string, max: number, ratio: number): SceneImage {
+  const widths = [...WIDTHS, max]
+  const set = (ext: string) =>
+    widths.map((w) => `${urls[`./${name}-${w}.${ext}`]} ${w}w`).join(', ')
+  return {
+    avif: set('avif'),
+    webp: set('webp'),
+    jpg: set('jpg'),
+    src: urls[`./${name}-1200.jpg`],
+    width: max,
+    height: Math.round(max / ratio),
+    // object-cover: a imagem precisa cobrir largura E altura da seção (min 100vh)
+    sizes: ratio > 1 ? `max(100vw, ${Math.round(ratio * 100)}vh)` : '100vw',
+  }
 }
 
 export const images = {
-  hero: { webp: heroWebp, jpg: heroJpg },
-  manifesto: { webp: manifestoWebp, jpg: manifestoJpg },
-  espresso: { webp: espressoWebp, jpg: espressoJpg },
-  latte: { webp: latteWebp, jpg: latteJpg },
-  coldbrew: { webp: coldbrewWebp, jpg: coldbrewJpg },
-  v60: { webp: v60Webp, jpg: v60Jpg },
-  origem: { webp: origemWebp, jpg: origemJpg },
-  casa: { webp: casaWebp, jpg: casaJpg },
-  footer: { webp: footerWebp, jpg: footerJpg },
-} satisfies Record<string, SceneImage>
+  hero: scene('hero-extracao', 1920, 1920 / 1280),
+  manifesto: scene('manifesto-vapor', 1920, 1920 / 1260),
+  espresso: scene('menu-espresso', 1600, 1600 / 2400),
+  latte: scene('menu-latte', 1600, 1600 / 2399),
+  coldbrew: scene('menu-coldbrew', 1600, 1600 / 1064),
+  v60: scene('menu-v60', 1600, 1600 / 2400),
+  origem: scene('origem-graos', 1920, 1920 / 1282),
+  casa: scene('casa-interior', 1920, 1920 / 1280),
+  footer: scene('footer-xicara', 1920, 1920 / 2880),
+}

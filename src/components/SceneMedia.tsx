@@ -74,9 +74,14 @@ export function SceneMedia({
   const media = (
     <div className={`absolute inset-0${ken ? ' ken' : ''}`} style={motionStyle}>
       <picture className="block h-full w-full">
-        <source srcSet={image.webp} type="image/webp" />
+        <source srcSet={image.avif} sizes={image.sizes} type="image/avif" />
+        <source srcSet={image.webp} sizes={image.sizes} type="image/webp" />
         <img
-          src={image.jpg}
+          src={image.src}
+          srcSet={image.jpg}
+          sizes={image.sizes}
+          width={image.width}
+          height={image.height}
           alt={alt}
           className="h-full w-full object-cover"
           style={{ filter, opacity: imgOpacity, objectPosition }}
