@@ -1,4 +1,4 @@
-// Fotos geradas por scripts/optimize-assets.mjs: 4 larguras × (avif, webp, jpg).
+// Fotos pré-otimizadas: 4 larguras × (avif, webp, jpg).
 // Cada SceneImage carrega os srcsets prontos pro <picture> do SceneMedia.
 const urls = import.meta.glob<string>('./*-*.{avif,webp,jpg}', {
   eager: true,

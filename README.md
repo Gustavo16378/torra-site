@@ -13,7 +13,7 @@ Feito como peça de portfólio. **Desenvolvido por [Gustavo Dev](https://gustavo
 - Tailwind CSS v4 (`@tailwindcss/vite`)
 - Lucide React
 - Animações 100% CSS + IntersectionObserver nativo (sem libs de animação)
-- Imagens otimizadas com `sharp` → WebP + fallback JPEG
+- Imagens pré-otimizadas em AVIF, WebP e JPEG, em quatro larguras
 
 ## Estrutura
 
@@ -24,15 +24,12 @@ src/
   hooks/        useScrollDirection, useReveal, useScrollSpy
   assets/       imagens otimizadas + images.ts
   index.css     tokens, keyframes (grain / Ken Burns / parallax), acessibilidade
-scripts/
-  optimize-assets.mjs   torra-assets/ → src/assets/ (WebP + JPEG, máx 1920px)
 ```
 
 ## Comandos
 
 ```bash
 npm install
-npm run assets   # (re)gera as imagens otimizadas a partir de torra-assets/
 npm run dev      # servidor de desenvolvimento
 npm run build    # tsc + vite build → dist/
 npm run preview  # pré-visualiza o build de produção
